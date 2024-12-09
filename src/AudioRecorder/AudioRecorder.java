@@ -76,6 +76,7 @@ public class AudioRecorder implements iAudioRecorder {
 
         // Return recorded audio as byte array
         return outputAudioStream.toByteArray();
+
     }
 
     public void saveRecording(byte[] audioData, String filePath) throws IOException {
@@ -95,8 +96,6 @@ public class AudioRecorder implements iAudioRecorder {
     }
 
     @Override
-    public boolean isRecording() {
-        return isRecording;
-    }
+    public boolean isRecording() { return isRecording; }
 
 }
