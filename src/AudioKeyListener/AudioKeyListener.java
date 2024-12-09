@@ -6,10 +6,10 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 
 public class AudioKeyListener implements NativeKeyListener {
 
-    Integer recordToggleKeyCode;
-    boolean isRecordingAudio;
-    iAudioRecorder audioRecorder;
-    iAudioTranscriber audioTranscriber;
+    private Integer recordToggleKeyCode;
+    private boolean isRecording = false;
+    private iAudioRecorder audioRecorder;
+    private iAudioTranscriber audioTranscriber;
 
     public AudioKeyListener() {
 
@@ -19,7 +19,6 @@ public class AudioKeyListener implements NativeKeyListener {
         this.recordToggleKeyCode = recordToggleKeyCode;
         this.audioRecorder = audioRecorder;
         this.audioTranscriber = audioTranscriber;
-        System.out.println(recordToggleKeyCode);
     }
 
     @Override
