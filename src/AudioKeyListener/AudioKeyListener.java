@@ -3,17 +3,13 @@ import AudioRecorder.iAudioRecorder;
 import AudioTranscriber.iAudioTranscriber;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import javax.sound.sampled.LineUnavailableException;
 
 public class AudioKeyListener implements NativeKeyListener {
 
     private Integer recordToggleKeyCode;
-    private boolean isRecording = false;
     private iAudioRecorder audioRecorder;
     private iAudioTranscriber audioTranscriber;
-
-    public AudioKeyListener() {
-
-    }
 
     public AudioKeyListener(int recordToggleKeyCode, iAudioRecorder audioRecorder, iAudioTranscriber audioTranscriber) {
         this.recordToggleKeyCode = recordToggleKeyCode;
@@ -27,8 +23,14 @@ public class AudioKeyListener implements NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
 
-        if (nativeEvent.getKeyCode() == recordToggleKeyCode) {
-
+        if (nativeEvent.getKeyCode() == recordToggleKeyCode && !audioRecorder.isRecording()) {
+            System.out.println("\nRecording audio...");
+            try {
+                audioRecorder.record();
+            } catch (LineUnavailableException e) {
+                System.err.println("\nFailed to begin recording!");
+                e.printStackTrace();
+            }
         }
 
     }
@@ -36,8 +38,9 @@ public class AudioKeyListener implements NativeKeyListener {
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
 
-        if (nativeEvent.getKeyCode() == recordToggleKeyCode) {
-
+        if (nativeEvent.getKeyCode() == recordToggleKeyCode && audioRecorder.isRecording()) {
+            System.out.println("\nStopping audio recording...");
+            byte[] recordedAudio = audioRecorder.stopRecording();
         }
 
     }

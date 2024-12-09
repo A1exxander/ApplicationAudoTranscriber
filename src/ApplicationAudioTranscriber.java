@@ -3,7 +3,6 @@ import AudioRecorder.AudioRecorder;
 import AudioTranscriber.AudioTranscriber;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
-import java.awt.event.KeyEvent;
 
 public class ApplicationAudioTranscriber {
 
