@@ -1,6 +1,7 @@
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import java.util.Map;
+
 import java.util.HashMap;
+import java.util.Map;
 
 public class VCMap {
 

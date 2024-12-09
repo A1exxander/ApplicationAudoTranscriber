@@ -4,6 +4,7 @@ import AudioRecorder.iAudioRecorder;
 import AudioTranscriber.iAudioTranscriber;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+
 import javax.sound.sampled.LineUnavailableException;
 
 public class AudioKeyListener implements NativeKeyListener {
