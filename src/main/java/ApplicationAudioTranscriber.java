@@ -8,23 +8,20 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 public class ApplicationAudioTranscriber {
 
     public static void main(String[] args) throws NativeHookException {
-        int recordToggleKeyCode = (args.length == 0) ? NativeKeyEvent.VC_F2 : getRecordToggleKeyCode(args[0]);
+        int recordToggleKeyCode = (args.length == 0) ? NativeKeyEvent.VC_F2 : Utils.getVCCode(args[0]);
         AudioKeyListener audioKeyListener = new AudioKeyListener(recordToggleKeyCode, new AudioRecorder(), new AudioTranscriber());
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeKeyListener(audioKeyListener);
     }
 
-    private static Integer getRecordToggleKeyCode(String recordToggleKey) {
-        Integer recordToggleKeyCode = 0;
-        try {
-            recordToggleKeyCode = VCMap.getVCCode(recordToggleKey);
-        } catch (IllegalArgumentException e) {
-            System.err.println("\nInvalid recording toggle key detected. Defaulting to F2's key code.");
-            recordToggleKeyCode = NativeKeyEvent.VC_F2;
-        }
-        finally {
-            return recordToggleKeyCode;
-        }
-    }
+    /*
+        TODO: 1. Refactor Utils to a Utils class
+              2. Refactor our getVCCode method to use switch case
+              3. Implement AudioTranscription using Vosk
+              4. Add transcription code to KeyListener handler
+              5. Add Util method to copy to clipboard
+              6. Update to use system wide audio as input instead of microphone
+              7. Dockerize
+     */
 
 }
