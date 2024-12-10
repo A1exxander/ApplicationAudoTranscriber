@@ -2,6 +2,7 @@ package AudioKeyListener;
 
 import AudioRecorder.iAudioRecorder;
 import AudioTranscriber.iAudioTranscriber;
+import Utilities.Utils;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import javax.sound.sampled.LineUnavailableException;
@@ -9,7 +10,7 @@ import java.io.IOException;
 
 public class AudioKeyListener implements NativeKeyListener {
 
-    private Integer recordToggleKeyCode;
+    private final Integer recordToggleKeyCode;
     private iAudioRecorder audioRecorder;
     private iAudioTranscriber audioTranscriber;
 
@@ -30,7 +31,7 @@ public class AudioKeyListener implements NativeKeyListener {
             try {
                 audioRecorder.record();
             } catch (LineUnavailableException e) {
-                System.err.println("\nFailed to begin recording!");
+                System.err.println("Failed to begin recording!");
                 e.printStackTrace();
             }
         }
@@ -41,13 +42,13 @@ public class AudioKeyListener implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
 
         if (nativeEvent.getKeyCode() == recordToggleKeyCode && audioRecorder.isRecording()) {
-            System.out.println("\nStopping audio recording...");
+            System.out.println("Stopping audio recording...");
             byte[] recordedAudio = audioRecorder.stopRecording();
-            System.out.println("\nTranscribing audio...");
+            System.out.println("Transcribing audio...");
             try {
                 String transcribedText = audioTranscriber.transcribe(recordedAudio);
-
-                System.out.println(transcribedText);
+                Utils.copyToClipboard(transcribedText);
+                System.out.println("Audio successfully transcribed & copied to clipboard!");
             } catch (IOException e) {
                 System.err.println("Failed to transcribe audio!");
                 e.printStackTrace();

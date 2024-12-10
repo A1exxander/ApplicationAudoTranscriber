@@ -1,6 +1,7 @@
 import AudioKeyListener.AudioKeyListener;
 import AudioRecorder.AudioRecorder;
 import AudioTranscriber.VoskAudioTranscriber;
+import Utilities.Utils;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -19,15 +20,14 @@ public class ApplicationAudioTranscriber {
         AudioKeyListener audioKeyListener = new AudioKeyListener(recordToggleKeyCode, new AudioRecorder(), new VoskAudioTranscriber(new Model(audioTranscriptionModelPath)));
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeKeyListener(audioKeyListener);
-        System.out.println("Successfully initialized transcriber!");
+        System.out.println("\nSuccessfully initialized transcriber!");
     }
 
     /*
-        TODO: 1. Add transcription code to KeyListener handler
-              2. Add Util method to copy to clipboard
-              3. Update to use system wide audio as input instead of microphone
-              4. Dockerize application
-              5. Create test cases & write unit tests
+        TODO: 1. Minor refactorings
+              2. Update to use system wide audio as input instead of microphone
+              3. Dockerize application
+              4. Create test cases & write unit tests
      */
 
 }

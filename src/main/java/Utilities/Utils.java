@@ -1,4 +1,8 @@
+package Utilities;
+
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 
 public class Utils {
 
@@ -38,6 +42,15 @@ public class Utils {
                 return NativeKeyEvent.VC_F2;
         }
 
+    }
+
+    public static void copyToClipboard(String text) {
+        Toolkit.getDefaultToolkit()
+                .getSystemClipboard()
+                .setContents(
+                        new StringSelection(text),
+                        null
+                );
     }
 
 }
