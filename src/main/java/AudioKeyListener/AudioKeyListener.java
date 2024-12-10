@@ -4,8 +4,8 @@ import AudioRecorder.iAudioRecorder;
 import AudioTranscriber.iAudioTranscriber;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-
 import javax.sound.sampled.LineUnavailableException;
+import java.io.IOException;
 
 public class AudioKeyListener implements NativeKeyListener {
 
@@ -43,6 +43,15 @@ public class AudioKeyListener implements NativeKeyListener {
         if (nativeEvent.getKeyCode() == recordToggleKeyCode && audioRecorder.isRecording()) {
             System.out.println("\nStopping audio recording...");
             byte[] recordedAudio = audioRecorder.stopRecording();
+            System.out.println("\nTranscribing audio...");
+            try {
+                String transcribedText = audioTranscriber.transcribe(recordedAudio);
+
+                System.out.println(transcribedText);
+            } catch (IOException e) {
+                System.err.println("Failed to transcribe audio!");
+                e.printStackTrace();
+            }
         }
 
     }

@@ -2,8 +2,6 @@ package AudioRecorder;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,11 +16,11 @@ public class AudioRecorder implements iAudioRecorder {
     public AudioRecorder() {
 
         audioFormat = new AudioFormat(
-                44100,  // Sample rate
+                16000,  // Sample rate
                 16,     // Sample size in bits
-                2,      // Channels (stereo)
+                1,      // Channels (mono)
                 true,   // Signed
-                false   // Big endian
+                false   // Little-endian
         );
 
         recordAudioExecutor = Executors.newSingleThreadExecutor();
@@ -43,11 +41,10 @@ public class AudioRecorder implements iAudioRecorder {
             throw new LineUnavailableException("System audio line not supported");
         }
 
+        outputAudioStream = new ByteArrayOutputStream();
         audioInputLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
         audioInputLine.open(audioFormat);
         audioInputLine.start();
-
-        outputAudioStream = new ByteArrayOutputStream();
         isRecording = true;
 
         recordAudioExecutor.execute(()-> {
@@ -69,29 +66,11 @@ public class AudioRecorder implements iAudioRecorder {
             throw new IllegalStateException("No recording in progress");
         }
 
-        // Stop recording
-        isRecording = false;
         audioInputLine.stop();
         audioInputLine.close();
+        isRecording = false;
 
-        // Return recorded audio as byte array
         return outputAudioStream.toByteArray();
-
-    }
-
-    public void saveRecording(byte[] audioData, String filePath) throws IOException {
-        // Save recording to a WAV file
-        AudioInputStream audioInputStream = new AudioInputStream(
-                new java.io.ByteArrayInputStream(audioData),
-                audioFormat,
-                audioData.length / audioFormat.getFrameSize()
-        );
-
-        AudioSystem.write(
-                audioInputStream,
-                AudioFileFormat.Type.WAVE,
-                new File(filePath)
-        );
 
     }
 
