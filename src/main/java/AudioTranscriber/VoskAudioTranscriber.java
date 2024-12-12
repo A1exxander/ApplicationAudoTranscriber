@@ -10,13 +10,16 @@ import java.io.IOException;
 public class VoskAudioTranscriber implements iAudioTranscriber {
 
     private final AudioFormat audioFormat;
-    private final Model model;
     private final Recognizer recognizer;
 
-    public VoskAudioTranscriber(Model model, AudioFormat audioFormat) throws IOException {
+    public VoskAudioTranscriber(AudioFormat audioFormat, Model model) throws IOException {
         this.audioFormat = audioFormat;
-        this.model = model;
         this.recognizer = new Recognizer(model, audioFormat.getSampleRate());
+    }
+
+    public VoskAudioTranscriber(AudioFormat audioFormat, Recognizer recognizer) {
+        this.audioFormat = audioFormat;
+        this.recognizer = recognizer;
     }
 
     @Override

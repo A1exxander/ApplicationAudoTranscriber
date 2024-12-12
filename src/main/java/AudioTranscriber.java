@@ -21,7 +21,7 @@ public class AudioTranscriber {
         final String audioTranscriptionModelPath = Paths.get("src","main", "resources", "vosk-model-small-en-us-0.15").toAbsolutePath().toString();
         final AudioFormat audioFormat = new AudioFormat(16000, 16, 1,true,  false);
         LibVosk.setLogLevel(LogLevel.WARNINGS);
-        AudioKeyListener audioKeyListener = new AudioKeyListener(recordToggleKeyCode, new AudioRecorder(audioFormat), new VoskAudioTranscriber(new Model(audioTranscriptionModelPath), audioFormat));
+        AudioKeyListener audioKeyListener = new AudioKeyListener(recordToggleKeyCode, new AudioRecorder(audioFormat), new VoskAudioTranscriber(audioFormat, new Model(audioTranscriptionModelPath)));
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeKeyListener(audioKeyListener);
         System.out.println("\nSuccessfully initialized transcriber!");
