@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class UtilsTest {
 
     @Nested
@@ -62,12 +61,12 @@ class UtilsTest {
         }
 
         @Test
-        void throwsExceptionWhenNullVCode(){
+        void throwsWhenNullVCode(){
             assertThrows(NullPointerException.class, () -> Utils.getVCode(null));
         }
 
         @Test
-        void defaultsToF2WhenInvalidVCodePassed(){
+        void providesDefaultWhenInvalidKeyNamePassed(){
             int defaultVCode = Utils.getVCode("invalid-key-name");
             assertEquals(defaultVCode, NativeKeyEvent.VC_F2);
         }
