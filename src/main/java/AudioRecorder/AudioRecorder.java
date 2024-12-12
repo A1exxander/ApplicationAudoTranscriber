@@ -14,7 +14,6 @@ public class AudioRecorder implements iAudioRecorder {
     private final ExecutorService recordAudioExecutor;
 
     public AudioRecorder() {
-
         audioFormat = new AudioFormat(
                 16000,  // Sample rate
                 16,     // Sample size in bits
@@ -22,18 +21,15 @@ public class AudioRecorder implements iAudioRecorder {
                 true,   // Signed
                 false   // Little-endian
         );
-
         recordAudioExecutor = Executors.newSingleThreadExecutor();
         isRecording = false;
 
     }
 
     public AudioRecorder(AudioFormat audioFormat) {
-
         this.audioFormat = audioFormat;
         recordAudioExecutor = Executors.newSingleThreadExecutor();
         isRecording = false;
-
     }
 
     @Override

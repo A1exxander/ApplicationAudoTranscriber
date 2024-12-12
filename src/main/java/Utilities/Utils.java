@@ -6,7 +6,7 @@ import java.awt.datatransfer.StringSelection;
 
 public class Utils {
 
-    public static Integer getVCCode(String keyName) {
+    public static Integer getVCode(String keyName) {
 
         if (keyName == null) {
             throw new NullPointerException("Key name provided was null!");

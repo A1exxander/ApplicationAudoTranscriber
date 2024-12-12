@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ApplicationAudioTranscriber.iml" filepath="$PROJECT_DIR$/ApplicationAudioTranscriber.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AudioTranscriber.iml" filepath="$PROJECT_DIR$/AudioTranscriber.iml" />
     </modules>
   </component>
 </project>
