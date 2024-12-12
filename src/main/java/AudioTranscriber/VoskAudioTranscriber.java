@@ -9,29 +9,35 @@ import java.io.IOException;
 
 public class VoskAudioTranscriber implements iAudioTranscriber {
 
-    private final Model audioTranscriptionModel;
+    private final AudioFormat audioFormat;
+    private final Model model;
     private final Recognizer recognizer;
 
-    public VoskAudioTranscriber(Model audioTranscriptionModel) throws IOException {
-        this.audioTranscriptionModel = audioTranscriptionModel;
-        this.recognizer = new Recognizer(audioTranscriptionModel, 16000);
+    public VoskAudioTranscriber(Model model, AudioFormat audioFormat) throws IOException {
+        this.audioFormat = audioFormat;
+        this.model = model;
+        this.recognizer = new Recognizer(model, audioFormat.getSampleRate());
     }
 
     @Override
     public String transcribe(byte[] audioBytes) throws IOException {
 
+        if (audioBytes == null || audioBytes.length == 0){
+            throw new IllegalArgumentException("Invalid audio bytes array.");
+        }
+
         ByteArrayInputStream audioByteInputStream = new ByteArrayInputStream(audioBytes);
-        AudioFormat format = new AudioFormat(16000, 16, 1, true, false);
-        AudioInputStream audioInputStream = new AudioInputStream(audioByteInputStream, format, audioBytes.length / format.getFrameSize());
+        AudioInputStream audioInputStream = new AudioInputStream(audioByteInputStream, audioFormat, audioBytes.length / audioFormat.getFrameSize());
 
         byte[] buffer = new byte[4096];
         StringBuilder transcribedText = new StringBuilder();
 
-        int bytesRead;
-        while ((bytesRead = audioInputStream.read(buffer)) != -1) {
+        int bytesRead = audioInputStream.read(buffer);
+        while (bytesRead != -1) {
             if (recognizer.acceptWaveForm(buffer, bytesRead)) {
                 transcribedText.append(recognizer.getResult());
             }
+            bytesRead = audioInputStream.read(buffer);
         }
 
         transcribedText.append(recognizer.getFinalResult());

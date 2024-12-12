@@ -9,26 +9,22 @@ public class AudioRecorder implements iAudioRecorder {
 
     private final AudioFormat audioFormat;
     private TargetDataLine audioInputLine;
+    private final ExecutorService recordAudioExecutor;
     private ByteArrayOutputStream outputAudioStream;
     private boolean isRecording;
-    private final ExecutorService recordAudioExecutor;
 
-    public AudioRecorder() {
-        audioFormat = new AudioFormat(
-                16000,  // Sample rate
-                16,     // Sample size in bits
-                1,      // Channels (mono)
-                true,   // Signed
-                false   // Little-endian
-        );
+    public AudioRecorder(AudioFormat audioFormat) throws LineUnavailableException {
+        this.audioFormat = audioFormat;
+        DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+        audioInputLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
         recordAudioExecutor = Executors.newSingleThreadExecutor();
         isRecording = false;
-
     }
 
-    public AudioRecorder(AudioFormat audioFormat) {
+    public AudioRecorder(AudioFormat audioFormat, TargetDataLine audioInputLine, ExecutorService recordAudioExecutor) throws LineUnavailableException {
         this.audioFormat = audioFormat;
-        recordAudioExecutor = Executors.newSingleThreadExecutor();
+        this.audioInputLine = audioInputLine;
+        this.recordAudioExecutor = recordAudioExecutor;
         isRecording = false;
     }
 
@@ -39,14 +35,7 @@ public class AudioRecorder implements iAudioRecorder {
             throw new IllegalStateException("Cannot begin recording audio! Audio is already being recorded.");
         }
 
-        DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-
-        if (!AudioSystem.isLineSupported(dataLineInfo)) {
-            throw new LineUnavailableException("System audio line not supported");
-        }
-
         outputAudioStream = new ByteArrayOutputStream();
-        audioInputLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
         audioInputLine.open(audioFormat);
         audioInputLine.start();
         isRecording = true;
@@ -80,5 +69,19 @@ public class AudioRecorder implements iAudioRecorder {
 
     @Override
     public boolean isRecording() { return isRecording; }
+
+    public void setAudioInputLine(TargetDataLine audioInputLine) {
+
+        if (isRecording || this.audioInputLine.isOpen()) {
+            throw new IllegalStateException("Cannot change audio input line while recording is in progress.");
+        }
+        else if (audioInputLine == null) {
+            throw new NullPointerException("Audio input line cannot be set to null.");
+        }
+
+        this.audioInputLine = audioInputLine;
+
+    }
+
 
 }

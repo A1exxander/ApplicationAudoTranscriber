@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UtilsTest {
 
     @Nested
-    class copyToClipboardTests {
+    class CopyToClipboardTests {
 
         @Test
         void works() throws IOException, UnsupportedFlavorException {
@@ -35,7 +35,7 @@ class UtilsTest {
     }
 
     @Nested
-    class getVCodeTests {
+    class GetVCodeTests {
 
         private static Stream<Object[]> provideKeyCodes() {
             return Stream.of(
@@ -57,18 +57,19 @@ class UtilsTest {
         @MethodSource("provideKeyCodes")
         void returnsCorrectVCodeForValidKeys(String keyName, int expectedCode) {
             int actualCode = Utils.getVCode(keyName);
-            assertEquals(expectedCode, actualCode, "Key code for " + keyName + " should match the expected value.");
+            assertEquals(expectedCode, actualCode);
         }
 
         @Test
         void throwsWhenNullVCode(){
-            assertThrows(NullPointerException.class, () -> Utils.getVCode(null));
+            assertThrows(NullPointerException.class, ()-> Utils.getVCode(null));
         }
 
         @Test
-        void providesDefaultWhenInvalidKeyNamePassed(){
+        void providesDefaultWhenInvalidKeyNamePassed() {
             int defaultVCode = Utils.getVCode("invalid-key-name");
-            assertEquals(defaultVCode, NativeKeyEvent.VC_F2);
+            int expectedDefaultVCode = NativeKeyEvent.VC_F2;
+            assertEquals(defaultVCode, expectedDefaultVCode);
         }
 
     }
