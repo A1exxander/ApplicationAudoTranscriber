@@ -7,11 +7,11 @@ import java.util.concurrent.Executors;
 
 public class AudioRecorder implements iAudioRecorder {
 
+    private final AudioFormat audioFormat;
     private TargetDataLine audioInputLine;
-    private AudioFormat audioFormat;
     private ByteArrayOutputStream outputAudioStream;
-    private ExecutorService recordAudioExecutor;
     private boolean isRecording;
+    private final ExecutorService recordAudioExecutor;
 
     public AudioRecorder() {
 
@@ -23,6 +23,14 @@ public class AudioRecorder implements iAudioRecorder {
                 false   // Little-endian
         );
 
+        recordAudioExecutor = Executors.newSingleThreadExecutor();
+        isRecording = false;
+
+    }
+
+    public AudioRecorder(AudioFormat audioFormat) {
+
+        this.audioFormat = audioFormat;
         recordAudioExecutor = Executors.newSingleThreadExecutor();
         isRecording = false;
 

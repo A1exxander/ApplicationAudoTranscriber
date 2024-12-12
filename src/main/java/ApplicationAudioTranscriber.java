@@ -8,6 +8,8 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import org.vosk.LibVosk;
 import org.vosk.LogLevel;
 import org.vosk.Model;
+
+import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.nio.file.Paths;
 

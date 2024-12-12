@@ -11,8 +11,8 @@ import java.io.IOException;
 public class AudioKeyListener implements NativeKeyListener {
 
     private final Integer recordToggleKeyCode;
-    private iAudioRecorder audioRecorder;
-    private iAudioTranscriber audioTranscriber;
+    private final iAudioRecorder audioRecorder;
+    private final iAudioTranscriber audioTranscriber;
 
     public AudioKeyListener(int recordToggleKeyCode, iAudioRecorder audioRecorder, iAudioTranscriber audioTranscriber) {
         this.recordToggleKeyCode = recordToggleKeyCode;
